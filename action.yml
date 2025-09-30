@@ -1,0 +1,38 @@
+name: "Delete orphan branch"
+description: "Delete orphan branches."
+author: "Daiji256"
+branding:
+  icon: "delete"
+  color: "gray-dark"
+
+inputs:
+  branch-regex:
+    description: "Regex to match branch names eligible for deletion."
+    required: true
+  expected-committer-name:
+    description: "Delete only branches whose committer name exactly matches this. Default: 'github-actions[bot]'."
+    required: false
+    default: "github-actions[bot]"
+  expected-committer-email:
+    description: "Delete only branches whose committer email exactly matches this. Default: '41898282+github-actions[bot]@users.noreply.github.com'."
+    required: false
+    default: "41898282+github-actions[bot]@users.noreply.github.com"
+  expected-commit-message:
+    description: "Delete only branches whose commit message exactly matches this. Omit to ignore message filtering."
+    required: false
+  older-than-seconds:
+    description: "Delete branches only if they are older than this many seconds. Set 0 to delete all matched branches."
+    required: false
+    default: "0"
+
+runs:
+  using: "composite"
+  steps:
+    - shell: bash
+      env:
+        BRANCH_REGEX: ${{ inputs.branch-regex }}
+        EXPECTED_COMMITTER_NAME: ${{ inputs.expected-committer-name }}
+        EXPECTED_COMMITTER_EMAIL: ${{ inputs.expected-committer-email }}
+        EXPECTED_COMMIT_MESSAGE: ${{ inputs.expected-commit-message }}
+        OLDER_THAN_SECONDS: ${{ inputs.older-than-seconds }}
+      run: bash ${{ github.action_path }}/main.sh
