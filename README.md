@@ -6,7 +6,7 @@ Companion actions are available: upload at [daiji256/upload-to-orphan-branch](ht
 
 ## Why delete orphan branches
 
-If you keep saving artifacts in new orphan branches, the branch list grows, clutters the repository, and slowly increases its size. Deleting old artifact branches prevents that.
+If you keep saving workflow outputs in new orphan branches, the branch list grows, clutters the repository, and slowly increases its size. Deleting old branches prevents that.
 
 ## How it works
 
@@ -46,7 +46,7 @@ jobs:
 
       - uses: daiji256/delete-orphan-branch@v0.1.0
         with:
-          branch-regex: orphan-artifact-*
+          branch-regex: orphan-output-*
           older-than-seconds: 604800 # 7 days
 ```
 
