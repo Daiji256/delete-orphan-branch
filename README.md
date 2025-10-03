@@ -44,7 +44,7 @@ jobs:
         with:
           fetch-depth: 0
 
-      - uses: daiji256/delete-orphan-branch@v0.1.0
+      - uses: daiji256/delete-orphan-branch@v1
         with:
           branch-regex: orphan-output-*
           older-than-seconds: 604800 # 7 days
