@@ -46,7 +46,7 @@ jobs:
 
       - uses: daiji256/delete-orphan-branch@v1
         with:
-          branch-regex: orphan-output-*
+          branch-regex: orphan-output-.*
           older-than-seconds: 604800 # 7 days
 ```
 
