@@ -24,6 +24,15 @@ inputs:
     description: "Delete branches only if they are older than this many seconds. Set 0 to delete all matched branches."
     required: false
     default: "0"
+  if-branch-not-found:
+    description: >
+      The desired behavior if a matched branch is gone when deletion is attempted.
+
+      Available Options:
+      - ignore: Continue without failing
+      - error: Fail the action with an error message
+    required: false
+    default: "ignore"
 
 runs:
   using: "composite"
@@ -35,4 +44,5 @@ runs:
         EXPECTED_COMMITTER_EMAIL: ${{ inputs.expected-committer-email }}
         EXPECTED_COMMIT_MESSAGE: ${{ inputs.expected-commit-message }}
         OLDER_THAN_SECONDS: ${{ inputs.older-than-seconds }}
+        IF_BRANCH_NOT_FOUND: ${{ inputs.if-branch-not-found }}
       run: bash ${{ github.action_path }}/main.sh
