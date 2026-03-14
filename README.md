@@ -24,6 +24,7 @@ If you keep saving workflow outputs in new orphan branches, the branch list grow
 | expected-committer-email | 41898282+github-actions[bot]@users.noreply.github.com | Delete only branches whose committer email exactly matches this.                                     |
 | expected-commit-message  | -                                                     | Delete only branches whose commit message exactly matches this. Omit to ignore message filtering.    |
 | older-than-seconds       | 0                                                     | Delete branches only if they are older than this many seconds. Set 0 to delete all matched branches. |
+| if-branch-not-found      | ignore                                                | `ignore`: continue without failing; `error`: fail action. |
 
 ## Notes
 

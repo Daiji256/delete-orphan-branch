@@ -1,6 +1,11 @@
 #!/bin/bash
 set -euo pipefail
 
+if [[ "$IF_BRANCH_NOT_FOUND" != "ignore" && "$IF_BRANCH_NOT_FOUND" != "error" ]]; then
+  echo "Invalid value for IF_BRANCH_NOT_FOUND: $IF_BRANCH_NOT_FOUND" >&2
+  exit 1
+fi
+
 now=$(date +%s)
 git fetch --prune --all
 head="$(git symbolic-ref --quiet --short refs/remotes/origin/HEAD 2>/dev/null)"
@@ -45,5 +50,16 @@ git branch -r --format="%(refname:short)" | while read -r remote; do
   fi
 
   echo "Deleting branch: $branch"
-  git push origin --delete "$branch"
+  if delete_output=$(git push origin --delete "$branch" 2>&1); then
+    echo "$delete_output"
+  else
+    if [[ "$IF_BRANCH_NOT_FOUND" == "ignore" && \
+          "$delete_output" == *"remote ref does not exist"* ]]; then
+      echo "Branch not found on remote (skipping): $branch"
+      continue
+    else
+      echo "$delete_output"
+      exit 1
+    fi
+  fi
 done
