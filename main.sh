@@ -50,9 +50,16 @@ git branch -r --format="%(refname:short)" | while read -r remote; do
   fi
 
   echo "Deleting branch: $branch"
-  if [[ "$IF_BRANCH_NOT_FOUND" == "ignore" ]]; then
-    git push origin --delete "$branch" || echo "Branch not found on remote (skipping): $branch"
+  if delete_output=$(git push origin --delete "$branch" 2>&1); then
+    echo "$delete_output"
   else
-    git push origin --delete "$branch"
+    if [[ "$IF_BRANCH_NOT_FOUND" == "ignore" && \
+          "$delete_output" == *"remote ref does not exist"* ]]; then
+      echo "Branch not found on remote (skipping): $branch"
+      continue
+    else
+      echo "$delete_output"
+      exit 1
+    fi
   fi
 done
